@@ -1,63 +1,62 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title>
+  <meta charset="utf-8">
+  <title>Universal Channel - ClearKey</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.compiled.min.js"></script>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      background: #000;
+      background: black;
       height: 100%;
       width: 100%;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     video {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      background-color: #000;
-      cursor: pointer;
+      width: 100%;
+      height: auto;
+      max-height: 100vh;
     }
   </style>
 </head>
 <body>
-  <video id="video" autoplay muted playsinline></video>
+  <video id="video" autoplay muted controls></video>
 
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
-    const video = document.getElementById('video');
-    const src = "https://shlsakamai3.akamaized.net/hlsorigin/tvg_hd_fm_2200/chunklist.m3u8?stream=philadelphia_mbr&cust=TVG&user=&t=1745420992&h=60c0c1772084cc2dd40168517a261cbc&type=live";
+    async function initPlayer() {
+      const video = document.getElementById('video');
+      const player = new shaka.Player(video);
 
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(src);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play();
+      shaka.polyfill.installAll();
+
+      if (!shaka.Player.isBrowserSupported()) {
+        alert('Tu navegador no soporta Shaka Player');
+        return;
+      }
+
+      const clearkeys = {
+        '6cf9a13d6fd65a0f2e1cee3969aab9f5': 'ea61c3c1adee71b5c2e9744e41d4b75f'
+      };
+
+      player.configure({
+        drm: {
+          clearKeys: clearkeys
+        }
       });
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = src;
-      video.addEventListener('loadedmetadata', () => {
-        video.play();
-      });
+
+      try {
+        await player.load('https://chromecast.cvattv.com.ar/live/c6eds/Universal_Channel_HD/SA_Live_dash_enc_C/Universal_Channel_HD.mpd');
+        console.log('¡Stream cargado con éxito!');
+      } catch (e) {
+        console.error('Error al cargar el stream', e);
+      }
     }
 
-    // Click para pantalla completa
-    video.addEventListener('click', () => {
-      if (video.requestFullscreen) {
-        video.requestFullscreen();
-      } else if (video.webkitRequestFullscreen) {
-        video.webkitRequestFullscreen();
-      } else if (video.msRequestFullscreen) {
-        video.msRequestFullscreen();
-      }
-    });
+    document.addEventListener('DOMContentLoaded', initPlayer);
   </script>
 </body>
 </html>
