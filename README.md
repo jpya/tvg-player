@@ -7,17 +7,21 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: black;
       height: 100%;
       width: 100%;
+      background-color: black;
       overflow: hidden;
     }
 
     video {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
       background: black;
+      border: none;
     }
   </style>
 </head>
@@ -32,7 +36,7 @@
       shaka.polyfill.installAll();
 
       if (!shaka.Player.isBrowserSupported()) {
-        alert('Tu navegador no soporta Shaka Player');
+        alert('Tu navegador no soporta reproducción con Shaka Player');
         return;
       }
 
@@ -48,14 +52,13 @@
 
       try {
         await player.load('https://chromecast.cvattv.com.ar/live/c6eds/Universal_Channel_HD/SA_Live_dash_enc_C/Universal_Channel_HD.mpd');
-        console.log('¡Stream cargado!');
+        console.log('¡Reproducción iniciada!');
       } catch (e) {
-        console.error('Error al cargar el stream:', e);
+        console.error('Error al reproducir el stream:', e);
       }
     }
 
     document.addEventListener('DOMContentLoaded', initPlayer);
   </script>
 </body>
-
 </html>
