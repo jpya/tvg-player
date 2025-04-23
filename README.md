@@ -2,7 +2,6 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Universal Channel - ClearKey</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.compiled.min.js"></script>
   <style>
     html, body {
@@ -11,20 +10,19 @@
       background: black;
       height: 100%;
       width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      overflow: hidden;
     }
 
     video {
-      width: 100%;
-      height: auto;
-      max-height: 100vh;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      background: black;
     }
   </style>
 </head>
 <body>
-  <video id="video" autoplay muted controls></video>
+  <video id="video" autoplay muted playsinline controls></video>
 
   <script>
     async function initPlayer() {
@@ -50,14 +48,13 @@
 
       try {
         await player.load('https://chromecast.cvattv.com.ar/live/c6eds/Universal_Channel_HD/SA_Live_dash_enc_C/Universal_Channel_HD.mpd');
-        console.log('¡Stream cargado con éxito!');
+        console.log('¡Stream cargado!');
       } catch (e) {
-        console.error('Error al cargar el stream', e);
+        console.error('Error al cargar el stream:', e);
       }
     }
 
     document.addEventListener('DOMContentLoaded', initPlayer);
   </script>
 </body>
-
 </html>
