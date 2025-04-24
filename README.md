@@ -41,7 +41,7 @@
       }
 
       const clearkeys = {
-        '6cf9a13d6fd65a0f2e1cee3969aab9f5': 'ea61c3c1adee71b5c2e9744e41d4b75f'
+        '1a61b644fdc68568b5be3e2629041564': 'a1672cdfb5de64707151128f811da667'
       };
 
       player.configure({
@@ -51,7 +51,7 @@
       });
 
       try {
-        await player.load('https://chromecast.cvattv.com.ar/live/c6eds/Universal_Channel_HD/SA_Live_dash_enc_C/Universal_Channel_HD.mpd');
+        await player.load('https://cdn.sensa.com.ar/live/eds/FoxSports1/live_dash_cld/FoxSports1.mpd');
         console.log('¡Reproducción iniciada!');
       } catch (e) {
         console.error('Error al reproducir el stream:', e);
